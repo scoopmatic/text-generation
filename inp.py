@@ -1,5 +1,11 @@
 import sys
 
+def is_new_doc(comments):
+    for c in comments:
+        if c.startswith("# fname"):
+            return True
+    return False
+
 def get_documents(fname):
     if fname.endswith(".gz"):
         import gzip
@@ -9,7 +15,7 @@ def get_documents(fname):
     current_doc=[]
     current_metadata=None
     for comm, sent in get_sentences(f):
-        if comm and comm[0].startswith("# fname"):  # new document starts
+        if comm and is_new_doc(comm):  # new document starts
             if current_doc:
                 yield current_doc, current_metadata
             current_doc, current_metadata = [], None
